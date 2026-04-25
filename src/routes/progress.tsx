@@ -22,7 +22,7 @@ export const Route = createFileRoute("/progress")({
   head: () => ({
     meta: [
       { title: "Your progress — SmokeFree" },
-      { name: "description", content: "See cigarettes avoided, money saved, streaks, and health milestones." },
+      { name: "description", content: "See cigarettes avoided, money saved, streaks, and achievements." },
     ],
   }),
   component: ProgressPage,
