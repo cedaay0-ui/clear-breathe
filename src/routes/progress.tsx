@@ -64,20 +64,10 @@ function ProgressPage() {
   const streak = currentStreak(plan, logs);
 
   const stats = [
-    { icon: Calendar, label: "Days in", value: String(daysSince + 1), tone: "primary" as const },
-    { icon: Flame, label: "Streak", value: String(streak), tone: "primary" as const },
-    {
-      icon: Cigarette,
-      label: "Avoided",
-      value: String(avoided),
-      tone: "primary" as const,
-    },
-    {
-      icon: Euro,
-      label: "Saved",
-      value: `€${money.toFixed(2)}`,
-      tone: "primary" as const,
-    },
+    { icon: Calendar, label: t("progress.statDaysIn"), value: String(daysSince + 1) },
+    { icon: Flame, label: t("progress.statStreak"), value: String(streak) },
+    { icon: Cigarette, label: t("progress.statAvoided"), value: String(avoided) },
+    { icon: Euro, label: t("progress.statSaved"), value: `€${money.toFixed(2)}` },
   ];
 
   return (
