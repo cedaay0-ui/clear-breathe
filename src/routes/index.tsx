@@ -10,10 +10,16 @@ import {
   dateKey,
   loadLogs,
   loadPlan,
+  loadTimes,
+  loadUnlocked,
   saveLogs,
+  saveTimes,
+  saveUnlocked,
   type SmokingLogs,
+  type SmokingTimes,
   type UserPlan,
 } from "@/lib/storage";
+import { ACHIEVEMENTS, evaluateAchievements } from "@/lib/achievements";
 
 export const Route = createFileRoute("/")({
   head: () => ({
