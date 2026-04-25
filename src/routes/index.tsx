@@ -182,7 +182,7 @@ function HomePage() {
         />
       </div>
       <div className="flex justify-between text-xs text-muted-foreground">
-        <span>{remaining} left today</span>
+        <span>{t("home.leftToday", { count: remaining })}</span>
         <span>{Math.round(pct)}%</span>
       </div>
 
