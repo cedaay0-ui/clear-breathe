@@ -253,8 +253,8 @@ function HomePage() {
           <Sparkles className="h-5 w-5 text-primary" />
         </div>
         <div className="text-sm">
-          <p className="font-medium text-foreground">You're on day {Math.max(1, daysSinceStart(plan))}</p>
-          <p className="text-muted-foreground">Every skipped cigarette is a small win.</p>
+          <p className="font-medium text-foreground">{t("home.onDay", { day: Math.max(1, daysSinceStart(plan)) })}</p>
+          <p className="text-muted-foreground">{t("home.encourage")}</p>
         </div>
       </div>
     </div>
