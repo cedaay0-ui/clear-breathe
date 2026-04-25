@@ -1,6 +1,8 @@
-import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
+import { Outlet, Link, createRootRoute, HeadContent, Scripts, useLocation } from "@tanstack/react-router";
+import { Home, TrendingUp, Settings as SettingsIcon } from "lucide-react";
 
 import appCss from "../styles.css?url";
+import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
   return (
@@ -9,7 +11,7 @@ function NotFoundComponent() {
         <h1 className="text-7xl font-bold text-foreground">404</h1>
         <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
+          The page you're looking for doesn't exist.
         </p>
         <div className="mt-6">
           <Link
@@ -28,22 +30,23 @@ export const Route = createRootRoute({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
+      { name: "theme-color", content: "#1a2540" },
+      { title: "SmokeFree — Quit smoking, one day at a time" },
+      {
+        name: "description",
+        content:
+          "Track, reduce, and quit smoking gradually. SmokeFree calculates a personal weekly plan and shows your progress, money saved, and health milestones.",
+      },
+      { property: "og:title", content: "SmokeFree — Quit smoking gradually" },
+      {
+        property: "og:description",
+        content: "A calm, minimal companion to help you quit smoking step by step.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
-    links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
-    ],
+    links: [{ rel: "stylesheet", href: appCss }],
   }),
   shellComponent: RootShell,
   component: RootComponent,
@@ -52,7 +55,7 @@ export const Route = createRootRoute({
 
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <head>
         <HeadContent />
       </head>
@@ -64,6 +67,52 @@ function RootShell({ children }: { children: React.ReactNode }) {
   );
 }
 
+function BottomNav() {
+  const { pathname } = useLocation();
+  const items = [
+    { to: "/", label: "Home", icon: Home },
+    { to: "/progress", label: "Progress", icon: TrendingUp },
+    { to: "/settings", label: "Settings", icon: SettingsIcon },
+  ] as const;
+
+  // Hide on onboarding
+  if (pathname === "/onboarding") return null;
+
+  return (
+    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-card/80 backdrop-blur-xl">
+      <div className="mx-auto flex max-w-md items-stretch justify-around px-2 pb-[env(safe-area-inset-bottom)]">
+        {items.map(({ to, label, icon: Icon }) => {
+          const active = pathname === to;
+          return (
+            <Link
+              key={to}
+              to={to}
+              className="flex flex-1 flex-col items-center gap-1 py-3 text-xs transition-colors"
+            >
+              <Icon
+                className={`h-5 w-5 transition-colors ${
+                  active ? "text-primary" : "text-muted-foreground"
+                }`}
+              />
+              <span className={active ? "text-primary font-medium" : "text-muted-foreground"}>
+                {label}
+              </span>
+            </Link>
+          );
+        })}
+      </div>
+    </nav>
+  );
+}
+
 function RootComponent() {
-  return <Outlet />;
+  return (
+    <div className="relative mx-auto flex min-h-screen max-w-md flex-col">
+      <main className="flex-1 pb-24">
+        <Outlet />
+      </main>
+      <BottomNav />
+      <Toaster />
+    </div>
+  );
 }
