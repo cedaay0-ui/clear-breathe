@@ -200,12 +200,12 @@ function HomePage() {
           <AlertTriangle className={`mt-0.5 h-5 w-5 shrink-0 ${overLimit ? "text-destructive" : "text-warning"}`} />
           <div className="text-sm">
             <p className="font-medium text-foreground">
-              {overLimit ? "Over your daily limit" : "Close to your limit"}
+              {overLimit ? t("home.overTitle") : t("home.nearTitle")}
             </p>
             <p className="mt-0.5 text-muted-foreground">
               {overLimit
-                ? "It happens. Aim to stay within tomorrow's target."
-                : `Only ${remaining} cigarette${remaining === 1 ? "" : "s"} left for today.`}
+                ? t("home.overBody")
+                : t("home.nearBody", { count: remaining })}
             </p>
           </div>
         </motion.div>
