@@ -122,6 +122,45 @@ function ProgressPage() {
         </p>
       </div>
 
+      {/* Achievements */}
+      <div className="mt-10 mb-4 flex items-baseline justify-between">
+        <h2 className="text-lg font-semibold text-foreground">Achievements</h2>
+        <span className="text-xs text-muted-foreground">
+          {earnedIds.size} / {ACHIEVEMENTS.length}
+        </span>
+      </div>
+      <div className="grid grid-cols-2 gap-3">
+        {ACHIEVEMENTS.map((a, i) => {
+          const got = earnedIds.has(a.id);
+          return (
+            <motion.div
+              key={a.id}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: i * 0.02 }}
+              className={`flex flex-col gap-2 rounded-2xl border p-3 transition-all ${
+                got
+                  ? "border-primary/30 bg-gradient-card shadow-soft"
+                  : "border-border bg-card/40 opacity-60"
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <span className={`text-2xl ${got ? "" : "grayscale"}`}>{a.emoji}</span>
+                {got ? (
+                  <CheckCircle2 className="h-4 w-4 text-primary" />
+                ) : (
+                  <Lock className="h-3.5 w-3.5 text-muted-foreground" />
+                )}
+              </div>
+              <p className={`text-sm font-medium leading-tight ${got ? "text-foreground" : "text-muted-foreground"}`}>
+                {a.title}
+              </p>
+              <p className="text-[11px] leading-snug text-muted-foreground">{a.description}</p>
+            </motion.div>
+          );
+        })}
+      </div>
+
       {/* Milestones */}
       <h2 className="mt-10 mb-4 text-lg font-semibold text-foreground">Health milestones</h2>
       <div className="space-y-3 pb-6">
