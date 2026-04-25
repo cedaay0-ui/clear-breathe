@@ -160,43 +160,8 @@ function ProgressPage() {
         })}
       </div>
 
-      {/* Milestones */}
-      <h2 className="mt-10 mb-4 text-lg font-semibold text-foreground">Health milestones</h2>
-      <div className="space-y-3 pb-6">
-        {MILESTONES.map((m, i) => {
-          const reached = daysSince + 1 >= m.day;
-          return (
-            <motion.div
-              key={m.day}
-              initial={{ opacity: 0, x: -8 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: i * 0.04 }}
-              className={`flex items-start gap-3 rounded-2xl border p-4 transition-colors ${
-                reached
-                  ? "border-primary/30 bg-gradient-card shadow-soft"
-                  : "border-border bg-card/40"
-              }`}
-            >
-              <div
-                className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${
-                  reached ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
-                }`}
-              >
-                {reached ? <CheckCircle2 className="h-5 w-5" /> : <Lock className="h-4 w-4" />}
-              </div>
-              <div className="flex-1">
-                <div className="flex items-baseline justify-between">
-                  <p className={`font-medium ${reached ? "text-foreground" : "text-muted-foreground"}`}>
-                    {m.title}
-                  </p>
-                  <span className="text-xs text-muted-foreground">Day {m.day}</span>
-                </div>
-                <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{m.description}</p>
-              </div>
-            </motion.div>
-          );
-        })}
-      </div>
+      <div className="pb-6" />
+
     </div>
   );
 }
