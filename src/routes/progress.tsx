@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Calendar, CheckCircle2, Cigarette, Euro, Flame, Lock } from "lucide-react";
 
@@ -9,11 +9,15 @@ import {
   daysBetween,
   loadLogs,
   loadPlan,
+  loadTimes,
+  loadUnlocked,
   moneySaved,
   type SmokingLogs,
+  type SmokingTimes,
   type UserPlan,
 } from "@/lib/storage";
 import { MILESTONES } from "@/lib/milestones";
+import { ACHIEVEMENTS, evaluateAchievements } from "@/lib/achievements";
 
 export const Route = createFileRoute("/progress")({
   head: () => ({
