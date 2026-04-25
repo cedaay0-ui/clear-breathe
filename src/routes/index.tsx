@@ -34,6 +34,7 @@ export const Route = createFileRoute("/")({
 
 function HomePage() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [plan, setPlan] = useState<UserPlan | null>(null);
   const [logs, setLogs] = useState<SmokingLogs>({});
   const [tick, setTick] = useState(0); // re-render trigger
