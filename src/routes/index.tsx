@@ -122,16 +122,16 @@ function HomePage() {
 
     const newSmoked = next[today];
     if (limit === 0) {
-      toast.warning("You've reached your quit day — try to skip this one.", {
-        description: "Drink water, take 10 deep breaths.",
+      toast.warning(t("home.toastQuitDay"), {
+        description: t("home.toastQuitDayBody"),
       });
     } else if (newSmoked === limit) {
-      toast("You've hit today's limit", {
-        description: "Try to make this your last for today.",
+      toast(t("home.toastHitLimit"), {
+        description: t("home.toastHitLimitBody"),
       });
     } else if (newSmoked > limit) {
-      toast.error("Over your daily limit", {
-        description: `You're ${newSmoked - limit} over. Tomorrow is a fresh start.`,
+      toast.error(t("home.toastOver"), {
+        description: t("home.toastOverBody", { count: newSmoked - limit }),
       });
     }
 
