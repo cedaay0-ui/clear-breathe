@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Cigarette, AlertTriangle, Sparkles, Minus } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -33,6 +34,7 @@ export const Route = createFileRoute("/")({
 
 function HomePage() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [plan, setPlan] = useState<UserPlan | null>(null);
   const [logs, setLogs] = useState<SmokingLogs>({});
   const [tick, setTick] = useState(0); // re-render trigger
@@ -62,10 +64,14 @@ function HomePage() {
       saveUnlocked(updated);
       newly.forEach((id) => {
         const a = ACHIEVEMENTS.find((x) => x.id === id);
-        if (a) toast.success(`${a.emoji} ${a.title}`, { description: a.description });
+        if (a) {
+          toast.success(`${a.emoji} ${t(`achievements.${a.id}.title`)}`, {
+            description: t(`achievements.${a.id}.desc`),
+          });
+        }
       });
     }
-  }, [navigate, tick]);
+  }, [navigate, tick, t]);
 
   const today = useMemo(() => dateKey(), []);
   const limit = plan ? dailyLimitFor(plan) : 0;
@@ -93,7 +99,9 @@ function HomePage() {
       newlyUnlocked.forEach((id) => {
         const a = ACHIEVEMENTS.find((x) => x.id === id);
         if (a) {
-          toast.success(`${a.emoji} ${a.title}`, { description: a.description });
+          toast.success(`${a.emoji} ${t(`achievements.${a.id}.title`)}`, {
+            description: t(`achievements.${a.id}.desc`),
+          });
         }
       });
     }
@@ -114,16 +122,16 @@ function HomePage() {
 
     const newSmoked = next[today];
     if (limit === 0) {
-      toast.warning("You've reached your quit day — try to skip this one.", {
-        description: "Drink water, take 10 deep breaths.",
+      toast.warning(t("home.toastQuitDay"), {
+        description: t("home.toastQuitDayBody"),
       });
     } else if (newSmoked === limit) {
-      toast("You've hit today's limit", {
-        description: "Try to make this your last for today.",
+      toast(t("home.toastHitLimit"), {
+        description: t("home.toastHitLimitBody"),
       });
     } else if (newSmoked > limit) {
-      toast.error("Over your daily limit", {
-        description: `You're ${newSmoked - limit} over. Tomorrow is a fresh start.`,
+      toast.error(t("home.toastOver"), {
+        description: t("home.toastOverBody", { count: newSmoked - limit }),
       });
     }
 
@@ -149,7 +157,7 @@ function HomePage() {
     <div className="flex min-h-screen flex-col px-6 pt-12">
       {/* Header */}
       <div className="mb-8">
-        <p className="text-sm text-muted-foreground">Today's limit</p>
+        <p className="text-sm text-muted-foreground">{t("home.todaysLimit")}</p>
         <div className="mt-1 flex items-baseline gap-2">
           <h1 className="text-5xl font-semibold tracking-tight text-foreground">
             {smoked}
@@ -174,7 +182,7 @@ function HomePage() {
         />
       </div>
       <div className="flex justify-between text-xs text-muted-foreground">
-        <span>{remaining} left today</span>
+        <span>{t("home.leftToday", { count: remaining })}</span>
         <span>{Math.round(pct)}%</span>
       </div>
 
@@ -192,12 +200,12 @@ function HomePage() {
           <AlertTriangle className={`mt-0.5 h-5 w-5 shrink-0 ${overLimit ? "text-destructive" : "text-warning"}`} />
           <div className="text-sm">
             <p className="font-medium text-foreground">
-              {overLimit ? "Over your daily limit" : "Close to your limit"}
+              {overLimit ? t("home.overTitle") : t("home.nearTitle")}
             </p>
             <p className="mt-0.5 text-muted-foreground">
               {overLimit
-                ? "It happens. Aim to stay within tomorrow's target."
-                : `Only ${remaining} cigarette${remaining === 1 ? "" : "s"} left for today.`}
+                ? t("home.overBody")
+                : t("home.nearBody", { count: remaining })}
             </p>
           </div>
         </motion.div>
@@ -205,7 +213,7 @@ function HomePage() {
 
       {/* Tap button */}
       <div className="my-12 flex flex-1 flex-col items-center justify-center">
-        <p className="mb-6 text-sm text-muted-foreground">Tap when you smoke one</p>
+        <p className="mb-6 text-sm text-muted-foreground">{t("home.tapPrompt")}</p>
         <div className="relative">
           <div
             className={`absolute inset-0 rounded-full ${overLimit ? "" : "animate-pulse-ring"}`}
@@ -215,7 +223,7 @@ function HomePage() {
             whileTap={{ scale: 0.9 }}
             whileHover={{ scale: 1.03 }}
             onClick={tap}
-            aria-label="Log a cigarette"
+            aria-label={t("home.logAria")}
             className={`relative z-10 flex h-44 w-44 items-center justify-center rounded-full shadow-glow transition-colors ${
               overLimit
                 ? "bg-destructive/90"
@@ -234,7 +242,7 @@ function HomePage() {
             className="mt-8 gap-2 text-muted-foreground hover:text-foreground"
           >
             <Minus className="h-4 w-4" />
-            Undo last
+            {t("home.undo")}
           </Button>
         )}
       </div>
@@ -245,8 +253,8 @@ function HomePage() {
           <Sparkles className="h-5 w-5 text-primary" />
         </div>
         <div className="text-sm">
-          <p className="font-medium text-foreground">You're on day {Math.max(1, daysSinceStart(plan))}</p>
-          <p className="text-muted-foreground">Every skipped cigarette is a small win.</p>
+          <p className="font-medium text-foreground">{t("home.onDay", { day: Math.max(1, daysSinceStart(plan)) })}</p>
+          <p className="text-muted-foreground">{t("home.encourage")}</p>
         </div>
       </div>
     </div>

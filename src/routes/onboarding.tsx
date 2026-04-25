@@ -2,6 +2,8 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Cigarette, Euro, Calendar, ArrowRight, Wind } from "lucide-react";
+import { useTranslation } from "react-i18next";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,6 +21,7 @@ export const Route = createFileRoute("/onboarding")({
 
 function Onboarding() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [step, setStep] = useState(0);
   const [daily, setDaily] = useState("15");
   const [packPrice, setPackPrice] = useState("8");
@@ -52,19 +55,19 @@ function Onboarding() {
   const steps = [
     {
       icon: Wind,
-      title: "Welcome to SmokeFree",
-      subtitle: "A calm path away from cigarettes. We'll build a gradual plan based on your habits.",
+      title: t("onboarding.welcomeTitle"),
+      subtitle: t("onboarding.welcomeSubtitle"),
       content: null,
-      cta: "Begin",
+      cta: t("onboarding.begin"),
       action: next,
     },
     {
       icon: Cigarette,
-      title: "How many cigarettes per day?",
-      subtitle: "Be honest — this is your starting point, not a judgment.",
+      title: t("onboarding.dailyTitle"),
+      subtitle: t("onboarding.dailySubtitle"),
       content: (
         <div className="space-y-2">
-          <Label htmlFor="daily">Cigarettes / day</Label>
+          <Label htmlFor="daily">{t("onboarding.dailyLabel")}</Label>
           <Input
             id="daily"
             type="number"
@@ -76,17 +79,17 @@ function Onboarding() {
           />
         </div>
       ),
-      cta: "Continue",
+      cta: t("common.continue"),
       action: next,
     },
     {
       icon: Euro,
-      title: "Your pack",
-      subtitle: "We'll calculate how much you save as you cut down.",
+      title: t("onboarding.packTitle"),
+      subtitle: t("onboarding.packSubtitle"),
       content: (
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="price">Price (€)</Label>
+            <Label htmlFor="price">{t("onboarding.priceLabel")}</Label>
             <Input
               id="price"
               type="number"
@@ -99,7 +102,7 @@ function Onboarding() {
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="cpp">Cigs / pack</Label>
+            <Label htmlFor="cpp">{t("onboarding.cigsPerPackLabel")}</Label>
             <Input
               id="cpp"
               type="number"
@@ -112,16 +115,16 @@ function Onboarding() {
           </div>
         </div>
       ),
-      cta: "Continue",
+      cta: t("common.continue"),
       action: next,
     },
     {
       icon: Calendar,
-      title: "Your quit date",
-      subtitle: "We'll reduce your daily limit linearly each week until you reach zero.",
+      title: t("onboarding.quitTitle"),
+      subtitle: t("onboarding.quitSubtitle"),
       content: (
         <div className="space-y-2">
-          <Label htmlFor="quit">Target quit date</Label>
+          <Label htmlFor="quit">{t("onboarding.quitLabel")}</Label>
           <Input
             id="quit"
             type="date"
@@ -132,7 +135,7 @@ function Onboarding() {
           />
         </div>
       ),
-      cta: "Create my plan",
+      cta: t("onboarding.createPlan"),
       action: finish,
     },
   ];
@@ -179,7 +182,7 @@ function Onboarding() {
               className="h-14 w-full rounded-2xl bg-gradient-primary text-base font-semibold text-primary-foreground shadow-glow hover:opacity-95"
             >
               {current.cta}
-              <ArrowRight className="ml-2 h-5 w-5" />
+              <ArrowRight className="ml-2 h-5 w-5 rtl:rotate-180" />
             </Button>
             {step > 0 && (
               <Button
@@ -187,7 +190,7 @@ function Onboarding() {
                 variant="ghost"
                 className="h-12 w-full text-muted-foreground hover:text-foreground"
               >
-                Back
+                {t("common.back")}
               </Button>
             )}
           </div>

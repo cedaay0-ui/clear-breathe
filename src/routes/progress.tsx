@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Calendar, CheckCircle2, Cigarette, Euro, Flame, Lock } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import {
   cigsAvoided,
@@ -30,6 +31,7 @@ export const Route = createFileRoute("/progress")({
 
 function ProgressPage() {
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
   const [plan, setPlan] = useState<UserPlan | null>(null);
   const [logs, setLogs] = useState<SmokingLogs>({});
   const [times, setTimes] = useState<SmokingTimes>({});
@@ -62,26 +64,16 @@ function ProgressPage() {
   const streak = currentStreak(plan, logs);
 
   const stats = [
-    { icon: Calendar, label: "Days in", value: String(daysSince + 1), tone: "primary" as const },
-    { icon: Flame, label: "Streak", value: String(streak), tone: "primary" as const },
-    {
-      icon: Cigarette,
-      label: "Avoided",
-      value: String(avoided),
-      tone: "primary" as const,
-    },
-    {
-      icon: Euro,
-      label: "Saved",
-      value: `€${money.toFixed(2)}`,
-      tone: "primary" as const,
-    },
+    { icon: Calendar, label: t("progress.statDaysIn"), value: String(daysSince + 1) },
+    { icon: Flame, label: t("progress.statStreak"), value: String(streak) },
+    { icon: Cigarette, label: t("progress.statAvoided"), value: String(avoided) },
+    { icon: Euro, label: t("progress.statSaved"), value: `€${money.toFixed(2)}` },
   ];
 
   return (
     <div className="px-6 pt-12">
-      <h1 className="text-3xl font-semibold tracking-tight text-foreground">Your progress</h1>
-      <p className="mt-2 text-sm text-muted-foreground">Look how far you've come.</p>
+      <h1 className="text-3xl font-semibold tracking-tight text-foreground">{t("progress.title")}</h1>
+      <p className="mt-2 text-sm text-muted-foreground">{t("progress.subtitle")}</p>
 
       {/* Stat grid */}
       <div className="mt-8 grid grid-cols-2 gap-3">
@@ -107,9 +99,9 @@ function ProgressPage() {
 
       {/* Quit date countdown */}
       <div className="mt-6 rounded-2xl border border-primary/20 bg-primary/5 p-5">
-        <p className="text-xs uppercase tracking-wide text-primary">Quit date</p>
+        <p className="text-xs uppercase tracking-wide text-primary">{t("progress.quitDate")}</p>
         <p className="mt-1 text-lg font-medium text-foreground">
-          {new Date(plan.quitDate).toLocaleDateString(undefined, {
+          {new Date(plan.quitDate).toLocaleDateString(i18n.language, {
             weekday: "long",
             month: "long",
             day: "numeric",
@@ -117,13 +109,13 @@ function ProgressPage() {
           })}
         </p>
         <p className="mt-1 text-sm text-muted-foreground">
-          {Math.max(0, daysBetween(new Date(), new Date(plan.quitDate)))} days to go
+          {t("progress.daysToGo", { count: Math.max(0, daysBetween(new Date(), new Date(plan.quitDate))) })}
         </p>
       </div>
 
       {/* Achievements */}
       <div className="mt-10 mb-4 flex items-baseline justify-between">
-        <h2 className="text-lg font-semibold text-foreground">Achievements</h2>
+        <h2 className="text-lg font-semibold text-foreground">{t("progress.achievements")}</h2>
         <span className="text-xs text-muted-foreground">
           {earnedIds.size} / {ACHIEVEMENTS.length}
         </span>
@@ -152,9 +144,9 @@ function ProgressPage() {
                 )}
               </div>
               <p className={`text-sm font-medium leading-tight ${got ? "text-foreground" : "text-muted-foreground"}`}>
-                {a.title}
+                {t(`achievements.${a.id}.title`)}
               </p>
-              <p className="text-[11px] leading-snug text-muted-foreground">{a.description}</p>
+              <p className="text-[11px] leading-snug text-muted-foreground">{t(`achievements.${a.id}.desc`)}</p>
             </motion.div>
           );
         })}

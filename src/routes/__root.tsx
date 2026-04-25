@@ -1,8 +1,10 @@
 import { Outlet, Link, createRootRoute, HeadContent, Scripts, useLocation } from "@tanstack/react-router";
 import { Home, TrendingUp, Settings as SettingsIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import appCss from "../styles.css?url";
 import { Toaster } from "@/components/ui/sonner";
+import "@/i18n"; // initialize i18n
 
 function NotFoundComponent() {
   return (
@@ -69,10 +71,11 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function BottomNav() {
   const { pathname } = useLocation();
+  const { t } = useTranslation();
   const items = [
-    { to: "/", label: "Home", icon: Home },
-    { to: "/progress", label: "Progress", icon: TrendingUp },
-    { to: "/settings", label: "Settings", icon: SettingsIcon },
+    { to: "/", label: t("nav.home"), icon: Home },
+    { to: "/progress", label: t("nav.progress"), icon: TrendingUp },
+    { to: "/settings", label: t("nav.settings"), icon: SettingsIcon },
   ] as const;
 
   // Hide on onboarding
