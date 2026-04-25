@@ -72,8 +72,8 @@ function ProgressPage() {
 
   return (
     <div className="px-6 pt-12">
-      <h1 className="text-3xl font-semibold tracking-tight text-foreground">Your progress</h1>
-      <p className="mt-2 text-sm text-muted-foreground">Look how far you've come.</p>
+      <h1 className="text-3xl font-semibold tracking-tight text-foreground">{t("progress.title")}</h1>
+      <p className="mt-2 text-sm text-muted-foreground">{t("progress.subtitle")}</p>
 
       {/* Stat grid */}
       <div className="mt-8 grid grid-cols-2 gap-3">
