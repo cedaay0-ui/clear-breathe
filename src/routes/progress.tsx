@@ -31,6 +31,7 @@ export const Route = createFileRoute("/progress")({
 
 function ProgressPage() {
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
   const [plan, setPlan] = useState<UserPlan | null>(null);
   const [logs, setLogs] = useState<SmokingLogs>({});
   const [times, setTimes] = useState<SmokingTimes>({});
