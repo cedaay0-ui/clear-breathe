@@ -157,7 +157,7 @@ function HomePage() {
     <div className="flex min-h-screen flex-col px-6 pt-12">
       {/* Header */}
       <div className="mb-8">
-        <p className="text-sm text-muted-foreground">Today's limit</p>
+        <p className="text-sm text-muted-foreground">{t("home.todaysLimit")}</p>
         <div className="mt-1 flex items-baseline gap-2">
           <h1 className="text-5xl font-semibold tracking-tight text-foreground">
             {smoked}
