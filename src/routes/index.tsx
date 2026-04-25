@@ -64,10 +64,14 @@ function HomePage() {
       saveUnlocked(updated);
       newly.forEach((id) => {
         const a = ACHIEVEMENTS.find((x) => x.id === id);
-        if (a) toast.success(`${a.emoji} ${a.title}`, { description: a.description });
+        if (a) {
+          toast.success(`${a.emoji} ${t(`achievements.${a.id}.title`)}`, {
+            description: t(`achievements.${a.id}.desc`),
+          });
+        }
       });
     }
-  }, [navigate, tick]);
+  }, [navigate, tick, t]);
 
   const today = useMemo(() => dateKey(), []);
   const limit = plan ? dailyLimitFor(plan) : 0;
