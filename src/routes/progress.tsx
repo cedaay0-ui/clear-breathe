@@ -16,7 +16,6 @@ import {
   type SmokingTimes,
   type UserPlan,
 } from "@/lib/storage";
-import { MILESTONES } from "@/lib/milestones";
 import { ACHIEVEMENTS, evaluateAchievements } from "@/lib/achievements";
 
 export const Route = createFileRoute("/progress")({
