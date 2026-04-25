@@ -9,9 +9,13 @@ export type UserPlan = {
 };
 
 export type SmokingLogs = Record<string, number>; // dateKey -> count smoked
+export type SmokingTimes = Record<string, string[]>; // dateKey -> ISO timestamps of each smoke
+export type UnlockedAchievements = Record<string, string>; // achievementId -> ISO unlock date
 
 const PLAN_KEY = "smokefree:plan";
 const LOG_KEY = "smokefree:logs";
+const TIMES_KEY = "smokefree:times";
+const ACH_KEY = "smokefree:achievements";
 
 export function loadPlan(): UserPlan | null {
   if (typeof window === "undefined") return null;
@@ -30,6 +34,8 @@ export function savePlan(plan: UserPlan) {
 export function clearAll() {
   localStorage.removeItem(PLAN_KEY);
   localStorage.removeItem(LOG_KEY);
+  localStorage.removeItem(TIMES_KEY);
+  localStorage.removeItem(ACH_KEY);
 }
 
 export function loadLogs(): SmokingLogs {
@@ -44,6 +50,34 @@ export function loadLogs(): SmokingLogs {
 
 export function saveLogs(logs: SmokingLogs) {
   localStorage.setItem(LOG_KEY, JSON.stringify(logs));
+}
+
+export function loadTimes(): SmokingTimes {
+  if (typeof window === "undefined") return {};
+  try {
+    const raw = localStorage.getItem(TIMES_KEY);
+    return raw ? (JSON.parse(raw) as SmokingTimes) : {};
+  } catch {
+    return {};
+  }
+}
+
+export function saveTimes(times: SmokingTimes) {
+  localStorage.setItem(TIMES_KEY, JSON.stringify(times));
+}
+
+export function loadUnlocked(): UnlockedAchievements {
+  if (typeof window === "undefined") return {};
+  try {
+    const raw = localStorage.getItem(ACH_KEY);
+    return raw ? (JSON.parse(raw) as UnlockedAchievements) : {};
+  } catch {
+    return {};
+  }
+}
+
+export function saveUnlocked(u: UnlockedAchievements) {
+  localStorage.setItem(ACH_KEY, JSON.stringify(u));
 }
 
 export function dateKey(d: Date = new Date()): string {
@@ -71,9 +105,6 @@ export function dailyLimitFor(plan: UserPlan, d: Date = new Date()): number {
   if (elapsedDays >= totalDays) return 0;
 
   const currentWeek = Math.floor(elapsedDays / 7); // 0-indexed
-  // Linear reduction: week 0 -> initial, last week -> ~ initial / totalWeeks
-  // Final daily target at week (totalWeeks-1) should be the smallest step before 0.
-  // Using: limit = round(initial * (1 - currentWeek / totalWeeks))
   const ratio = 1 - currentWeek / totalWeeks;
   const limit = Math.max(0, Math.round(plan.initialDailyCount * ratio));
   return limit;
@@ -128,14 +159,8 @@ export function currentStreak(plan: UserPlan, logs: SmokingLogs): number {
     if (d < new Date(plan.startDate)) break;
     const limit = dailyLimitFor(plan, d);
     const smoked = logs[dateKey(d)] ?? 0;
-    // Today: count it only if user hasn't exceeded yet (still within limit so far)
-    if (i === 0) {
-      if (smoked <= limit) streak++;
-      else break;
-    } else {
-      if (smoked <= limit) streak++;
-      else break;
-    }
+    if (smoked <= limit) streak++;
+    else break;
   }
   return streak;
 }
