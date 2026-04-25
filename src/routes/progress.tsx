@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Calendar, CheckCircle2, Cigarette, Euro, Flame, Lock } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import {
   cigsAvoided,
