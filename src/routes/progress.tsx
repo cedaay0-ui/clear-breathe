@@ -144,9 +144,9 @@ function ProgressPage() {
                 )}
               </div>
               <p className={`text-sm font-medium leading-tight ${got ? "text-foreground" : "text-muted-foreground"}`}>
-                {a.title}
+                {t(`achievements.${a.id}.title`)}
               </p>
-              <p className="text-[11px] leading-snug text-muted-foreground">{a.description}</p>
+              <p className="text-[11px] leading-snug text-muted-foreground">{t(`achievements.${a.id}.desc`)}</p>
             </motion.div>
           );
         })}
