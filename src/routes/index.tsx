@@ -99,7 +99,9 @@ function HomePage() {
       newlyUnlocked.forEach((id) => {
         const a = ACHIEVEMENTS.find((x) => x.id === id);
         if (a) {
-          toast.success(`${a.emoji} ${a.title}`, { description: a.description });
+          toast.success(`${a.emoji} ${t(`achievements.${a.id}.title`)}`, {
+            description: t(`achievements.${a.id}.desc`),
+          });
         }
       });
     }
