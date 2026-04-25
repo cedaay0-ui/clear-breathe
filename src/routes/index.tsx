@@ -44,7 +44,27 @@ function HomePage() {
       return;
     }
     setPlan(p);
-    setLogs(loadLogs());
+    const l = loadLogs();
+    setLogs(l);
+    // Passive re-evaluation for time-based / streak / money achievements
+    const before = loadUnlocked();
+    const earned = evaluateAchievements(p, l, loadTimes());
+    const now = new Date().toISOString();
+    const updated = { ...before };
+    const newly: string[] = [];
+    earned.forEach((id) => {
+      if (!updated[id]) {
+        updated[id] = now;
+        newly.push(id);
+      }
+    });
+    if (newly.length > 0) {
+      saveUnlocked(updated);
+      newly.forEach((id) => {
+        const a = ACHIEVEMENTS.find((x) => x.id === id);
+        if (a) toast.success(`${a.emoji} ${a.title}`, { description: a.description });
+      });
+    }
   }, [navigate, tick]);
 
   const today = useMemo(() => dateKey(), []);
