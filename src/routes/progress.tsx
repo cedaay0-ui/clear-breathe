@@ -33,6 +33,8 @@ function ProgressPage() {
   const navigate = useNavigate();
   const [plan, setPlan] = useState<UserPlan | null>(null);
   const [logs, setLogs] = useState<SmokingLogs>({});
+  const [times, setTimes] = useState<SmokingTimes>({});
+  const [unlocked, setUnlocked] = useState<Record<string, string>>({});
 
   useEffect(() => {
     const p = loadPlan();
@@ -42,7 +44,16 @@ function ProgressPage() {
     }
     setPlan(p);
     setLogs(loadLogs());
+    setTimes(loadTimes());
+    setUnlocked(loadUnlocked());
   }, [navigate]);
+
+  const earnedIds = useMemo(() => {
+    if (!plan) return new Set<string>();
+    const live = evaluateAchievements(plan, logs, times);
+    Object.keys(unlocked).forEach((id) => live.add(id));
+    return live;
+  }, [plan, logs, times, unlocked]);
 
   if (!plan) return null;
 
