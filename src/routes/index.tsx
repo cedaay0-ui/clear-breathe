@@ -213,7 +213,7 @@ function HomePage() {
 
       {/* Tap button */}
       <div className="my-12 flex flex-1 flex-col items-center justify-center">
-        <p className="mb-6 text-sm text-muted-foreground">Tap when you smoke one</p>
+        <p className="mb-6 text-sm text-muted-foreground">{t("home.tapPrompt")}</p>
         <div className="relative">
           <div
             className={`absolute inset-0 rounded-full ${overLimit ? "" : "animate-pulse-ring"}`}
@@ -223,7 +223,7 @@ function HomePage() {
             whileTap={{ scale: 0.9 }}
             whileHover={{ scale: 1.03 }}
             onClick={tap}
-            aria-label="Log a cigarette"
+            aria-label={t("home.logAria")}
             className={`relative z-10 flex h-44 w-44 items-center justify-center rounded-full shadow-glow transition-colors ${
               overLimit
                 ? "bg-destructive/90"
@@ -242,7 +242,7 @@ function HomePage() {
             className="mt-8 gap-2 text-muted-foreground hover:text-foreground"
           >
             <Minus className="h-4 w-4" />
-            Undo last
+            {t("home.undo")}
           </Button>
         )}
       </div>
