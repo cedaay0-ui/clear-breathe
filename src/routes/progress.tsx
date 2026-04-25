@@ -99,9 +99,9 @@ function ProgressPage() {
 
       {/* Quit date countdown */}
       <div className="mt-6 rounded-2xl border border-primary/20 bg-primary/5 p-5">
-        <p className="text-xs uppercase tracking-wide text-primary">Quit date</p>
+        <p className="text-xs uppercase tracking-wide text-primary">{t("progress.quitDate")}</p>
         <p className="mt-1 text-lg font-medium text-foreground">
-          {new Date(plan.quitDate).toLocaleDateString(undefined, {
+          {new Date(plan.quitDate).toLocaleDateString(i18n.language, {
             weekday: "long",
             month: "long",
             day: "numeric",
@@ -109,13 +109,13 @@ function ProgressPage() {
           })}
         </p>
         <p className="mt-1 text-sm text-muted-foreground">
-          {Math.max(0, daysBetween(new Date(), new Date(plan.quitDate)))} days to go
+          {t("progress.daysToGo", { count: Math.max(0, daysBetween(new Date(), new Date(plan.quitDate))) })}
         </p>
       </div>
 
       {/* Achievements */}
       <div className="mt-10 mb-4 flex items-baseline justify-between">
-        <h2 className="text-lg font-semibold text-foreground">Achievements</h2>
+        <h2 className="text-lg font-semibold text-foreground">{t("progress.achievements")}</h2>
         <span className="text-xs text-muted-foreground">
           {earnedIds.size} / {ACHIEVEMENTS.length}
         </span>
