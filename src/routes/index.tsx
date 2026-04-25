@@ -55,11 +55,42 @@ function HomePage() {
   const overLimit = smoked > limit;
   const nearLimit = !overLimit && limit > 0 && smoked >= Math.ceil(limit * 0.8);
 
+  const checkAchievements = (nextLogs: SmokingLogs, nextTimes: SmokingTimes) => {
+    if (!plan) return;
+    const before = loadUnlocked();
+    const earned = evaluateAchievements(plan, nextLogs, nextTimes);
+    const now = new Date().toISOString();
+    const updated = { ...before };
+    const newlyUnlocked: string[] = [];
+    earned.forEach((id) => {
+      if (!updated[id]) {
+        updated[id] = now;
+        newlyUnlocked.push(id);
+      }
+    });
+    if (newlyUnlocked.length > 0) {
+      saveUnlocked(updated);
+      newlyUnlocked.forEach((id) => {
+        const a = ACHIEVEMENTS.find((x) => x.id === id);
+        if (a) {
+          toast.success(`${a.emoji} ${a.title}`, { description: a.description });
+        }
+      });
+    }
+  };
+
   const tap = () => {
     if (!plan) return;
     const next = { ...logs, [today]: (logs[today] ?? 0) + 1 };
     setLogs(next);
     saveLogs(next);
+
+    const times = loadTimes();
+    const nextTimes: SmokingTimes = {
+      ...times,
+      [today]: [...(times[today] ?? []), new Date().toISOString()],
+    };
+    saveTimes(nextTimes);
 
     const newSmoked = next[today];
     if (limit === 0) {
@@ -75,6 +106,8 @@ function HomePage() {
         description: `You're ${newSmoked - limit} over. Tomorrow is a fresh start.`,
       });
     }
+
+    checkAchievements(next, nextTimes);
   };
 
   const undo = () => {
@@ -82,6 +115,12 @@ function HomePage() {
     const next = { ...logs, [today]: smoked - 1 };
     setLogs(next);
     saveLogs(next);
+
+    const times = loadTimes();
+    const todayTimes = [...(times[today] ?? [])];
+    todayTimes.pop();
+    const nextTimes: SmokingTimes = { ...times, [today]: todayTimes };
+    saveTimes(nextTimes);
   };
 
   if (!plan) return null;
