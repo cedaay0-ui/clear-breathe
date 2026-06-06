@@ -21,6 +21,8 @@ import {
   type UserPlan,
 } from "@/lib/storage";
 import { ACHIEVEMENTS, evaluateAchievements } from "@/lib/achievements";
+import { showBottomBanner, hideBanner } from "@/lib/admob";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
