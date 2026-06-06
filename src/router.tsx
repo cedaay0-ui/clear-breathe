@@ -1,5 +1,15 @@
-import { createRouter, useRouter } from "@tanstack/react-router";
+import { createRouter, createHashHistory, useRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
+
+// Detect a native Capacitor runtime. When true, use hash history so all
+// routes resolve from a single static index.html loaded over file:// or
+// capacitor://. On the web (SSR / Lovable preview) we keep the default
+// browser history so URLs stay clean and shareable.
+function isNativeRuntime(): boolean {
+  if (typeof window === "undefined") return false;
+  const w = window as unknown as { Capacitor?: { isNativePlatform?: () => boolean } };
+  return !!w.Capacitor?.isNativePlatform?.();
+}
 
 function DefaultErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   const router = useRouter();
@@ -61,6 +71,7 @@ export const getRouter = () => {
     scrollRestoration: true,
     defaultPreloadStaleTime: 0,
     defaultErrorComponent: DefaultErrorComponent,
+    ...(isNativeRuntime() ? { history: createHashHistory() } : {}),
   });
 
   return router;
