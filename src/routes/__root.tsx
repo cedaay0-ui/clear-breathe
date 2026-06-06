@@ -109,6 +109,9 @@ function BottomNav() {
 }
 
 function RootComponent() {
+  useEffect(() => {
+    initAdMob();
+  }, []);
   return (
     <div className="relative mx-auto flex min-h-screen max-w-md flex-col">
       <main className="flex-1 pb-24">
@@ -119,3 +122,4 @@ function RootComponent() {
     </div>
   );
 }
+
