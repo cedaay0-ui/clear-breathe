@@ -18,6 +18,8 @@ import {
   type UserPlan,
 } from "@/lib/storage";
 import { ACHIEVEMENTS, evaluateAchievements } from "@/lib/achievements";
+import { showInterstitialOncePerSession } from "@/lib/admob";
+
 
 export const Route = createFileRoute("/progress")({
   head: () => ({
