@@ -18,6 +18,8 @@ import {
   type UserPlan,
 } from "@/lib/storage";
 import { ACHIEVEMENTS, evaluateAchievements } from "@/lib/achievements";
+import { showInterstitialOncePerSession } from "@/lib/admob";
+
 
 export const Route = createFileRoute("/progress")({
   head: () => ({
@@ -48,6 +50,11 @@ function ProgressPage() {
     setTimes(loadTimes());
     setUnlocked(loadUnlocked());
   }, [navigate]);
+
+  useEffect(() => {
+    showInterstitialOncePerSession();
+  }, []);
+
 
   const earnedIds = useMemo(() => {
     if (!plan) return new Set<string>();

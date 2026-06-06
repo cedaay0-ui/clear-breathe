@@ -1,6 +1,9 @@
 import { Outlet, Link, createRootRoute, HeadContent, Scripts, useLocation } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { Home, TrendingUp, Settings as SettingsIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { initAdMob } from "@/lib/admob";
+
 
 import appCss from "../styles.css?url";
 import { Toaster } from "@/components/ui/sonner";
@@ -109,6 +112,9 @@ function BottomNav() {
 }
 
 function RootComponent() {
+  useEffect(() => {
+    initAdMob();
+  }, []);
   return (
     <div className="relative mx-auto flex min-h-screen max-w-md flex-col">
       <main className="flex-1 pb-24">
@@ -119,3 +125,4 @@ function RootComponent() {
     </div>
   );
 }
+

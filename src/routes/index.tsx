@@ -21,6 +21,8 @@ import {
   type UserPlan,
 } from "@/lib/storage";
 import { ACHIEVEMENTS, evaluateAchievements } from "@/lib/achievements";
+import { showBottomBanner, hideBanner } from "@/lib/admob";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -38,6 +40,14 @@ function HomePage() {
   const [plan, setPlan] = useState<UserPlan | null>(null);
   const [logs, setLogs] = useState<SmokingLogs>({});
   const [tick, setTick] = useState(0); // re-render trigger
+
+  useEffect(() => {
+    showBottomBanner();
+    return () => {
+      hideBanner();
+    };
+  }, []);
+
 
   useEffect(() => {
     const p = loadPlan();
