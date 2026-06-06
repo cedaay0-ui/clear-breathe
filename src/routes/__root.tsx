@@ -1,6 +1,9 @@
 import { Outlet, Link, createRootRoute, HeadContent, Scripts, useLocation } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { Home, TrendingUp, Settings as SettingsIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { initAdMob } from "@/lib/admob";
+
 
 import appCss from "../styles.css?url";
 import { Toaster } from "@/components/ui/sonner";
