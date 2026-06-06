@@ -42,6 +42,14 @@ function HomePage() {
   const [tick, setTick] = useState(0); // re-render trigger
 
   useEffect(() => {
+    showBottomBanner();
+    return () => {
+      hideBanner();
+    };
+  }, []);
+
+
+  useEffect(() => {
     const p = loadPlan();
     if (!p) {
       navigate({ to: "/onboarding" });
