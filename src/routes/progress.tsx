@@ -51,6 +51,11 @@ function ProgressPage() {
     setUnlocked(loadUnlocked());
   }, [navigate]);
 
+  useEffect(() => {
+    showInterstitialOncePerSession();
+  }, []);
+
+
   const earnedIds = useMemo(() => {
     if (!plan) return new Set<string>();
     const live = evaluateAchievements(plan, logs, times);
